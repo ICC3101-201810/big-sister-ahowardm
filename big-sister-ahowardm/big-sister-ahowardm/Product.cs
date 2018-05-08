@@ -33,6 +33,12 @@ namespace LabPOO
       return false;
     }
 
+    public bool Quitar(List<Product> carrito){
+      carrito.Remove(this);
+      stock++;
+      return true;
+    }
+
     public string Name { get => name; }
     public int Stock { get => stock; }
     public int Price { get => price; }

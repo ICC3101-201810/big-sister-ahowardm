@@ -12,13 +12,18 @@ namespace LabPOO
 {
   class Program
   {
+
+    public delegate void BigSisterDelegate(Product product);
     public static List<Product> cart;
     public static List<Product> market;
+    //public static List<Product> requirements;
 
     static void Main(string[] args)
     {
       //cart = new List<Product>();
       market = new List<Product>();
+      BigSisterDelegate bigSister = new BigSisterDelegate(HermanaGrande);
+      //DefineRequirements();
       SupplyStore();
 
       if(!LoadData()){
@@ -67,6 +72,10 @@ namespace LabPOO
       }
     }
 
+    public static void HermanaGrande(Product product){
+      //RemoveFromCart(product);
+    }
+
     public static void Pay()
     {
       PrintHeader();
@@ -103,6 +112,7 @@ namespace LabPOO
             continue;
           }
           AddToCart(market[answer]);
+          HermanaGrande(market[answer]);
           break;
         }
         catch
@@ -143,6 +153,18 @@ namespace LabPOO
     {
       return product.Agregar(cart);
     }
+
+    public static bool RemoveFromCart(Product product){
+      return product.Quitar(cart);
+    }
+
+    /*public void DefineRequirements(){
+      requirements = new List<Product>();
+      requirements.Add(new Product("Láminas de Lasaña", 1250, 85, "400g"));
+      requirements.Add(new Product("Queso Rallado Parmesano", 499, 102, "40g"));
+      requirements.Add(new Product("Mantequilla", 850, 12, "125g"));
+      requirements.Add(new Product("Carne Molida", 4390, 15, "500g"));
+    }*/
 
     public static void SupplyStore()
     {
@@ -223,6 +245,7 @@ namespace LabPOO
       foreach (Product p in productsLoaded)
         cart.Add(p);
       fs.Close();
+      File.Delete(fileName);
       return true;
     }
   }
