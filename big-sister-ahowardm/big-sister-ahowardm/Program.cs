@@ -4,6 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Runtime.Serialization;
+using System.Runtime.Serialization.Formatters.Binary;
+using System.IO;
 
 namespace LabPOO
 {
@@ -14,9 +17,14 @@ namespace LabPOO
 
     static void Main(string[] args)
     {
-      cart = new List<Product>();
+      //cart = new List<Product>();
       market = new List<Product>();
       SupplyStore();
+
+      if(!LoadData()){
+        cart = new List<Product>();
+      }
+
       while (true)
       {
         PrintHeader();
@@ -51,6 +59,8 @@ namespace LabPOO
           }
           else if (answer == "5")
           {
+            if(cart.Count > 0)
+              SaveData();
             Environment.Exit(1);
           }
         }
@@ -190,6 +200,30 @@ namespace LabPOO
       {
         response = Console.ReadKey(true);
       }
+    }
+
+    static private void SaveData(){
+      String fileName = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Cart.txt");
+      FileStream fs = new FileStream(fileName, FileMode.Create);
+      IFormatter formatter = new BinaryFormatter();
+      formatter.Serialize(fs, cart);
+      fs.Close();
+    }
+
+    static private Boolean LoadData(){
+      String fileName = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Cart.txt");
+      if (!File.Exists(fileName))
+      {
+        return false;
+      }
+      FileStream fs = new FileStream(fileName, FileMode.Open);
+      IFormatter formatter = new BinaryFormatter();
+      List<Product> productsLoaded = formatter.Deserialize(fs) as List<Product>;
+      cart = new List<Product>();
+      foreach (Product p in productsLoaded)
+        cart.Add(p);
+      fs.Close();
+      return true;
     }
   }
 }
