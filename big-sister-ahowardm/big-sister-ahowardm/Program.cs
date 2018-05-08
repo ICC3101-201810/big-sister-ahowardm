@@ -16,14 +16,14 @@ namespace LabPOO
     public delegate void BigSisterDelegate(Product product);
     public static List<Product> cart;
     public static List<Product> market;
-    //public static List<Product> requirements;
+    public static List<Product> requirements;
 
     static void Main(string[] args)
     {
       //cart = new List<Product>();
       market = new List<Product>();
       BigSisterDelegate bigSister = new BigSisterDelegate(HermanaGrande);
-      //DefineRequirements();
+      DefineRequirements();
       SupplyStore();
 
       if(!LoadData()){
@@ -71,9 +71,9 @@ namespace LabPOO
         }
       }
     }
-
+    //Si descomentamos la linea de abajo se sacan los productos cada vez que se agregan al carro.
     public static void HermanaGrande(Product product){
-      //RemoveFromCart(product);
+      RemoveFromCart(product);
     }
 
     public static void Pay()
@@ -112,7 +112,9 @@ namespace LabPOO
             continue;
           }
           AddToCart(market[answer]);
-          HermanaGrande(market[answer]);
+
+          if (!IsNeeded(market[answer]))
+            HermanaGrande(market[answer]);
           break;
         }
         catch
@@ -120,6 +122,14 @@ namespace LabPOO
           continue;
         }
       }
+    }
+    // Comparacion para saber si es necesario el producto o no
+    static public Boolean IsNeeded(Product product){
+      foreach (Product p in requirements) {
+        if(p.Name.Equals(product.Name))
+          return true;
+      }
+      return false;
     }
 
     public static void PrintCart()
@@ -158,13 +168,22 @@ namespace LabPOO
       return product.Quitar(cart);
     }
 
-    /*public void DefineRequirements(){
+    static public void DefineRequirements(){
       requirements = new List<Product>();
       requirements.Add(new Product("Láminas de Lasaña", 1250, 85, "400g"));
       requirements.Add(new Product("Queso Rallado Parmesano", 499, 102, "40g"));
       requirements.Add(new Product("Mantequilla", 850, 12, "125g"));
       requirements.Add(new Product("Carne Molida", 4390, 15, "500g"));
-    }*/
+      requirements.Add(new Product("Vino Sauvignon Blanc Reserva Botella", 4150, 23, "750cc"));
+      requirements.Add(new Product("Tomate", 1290, 200, "1kg"));
+      requirements.Add(new Product("Bolsa de Zanahorias", 890, 74, "1un"));
+      requirements.Add(new Product("Malla de Cebollas", 1090, 91, "1kg"));
+      requirements.Add(new Product("Aceite de Oliva", 1790, 77, "250g"));
+      requirements.Add(new Product("Sal Lobos", 330, 150, "1kg"));
+      requirements.Add(new Product("Pimienta", 430, 84, "15g"));
+      requirements.Add(new Product("Harina", 890, 43, "1kg"));
+      requirements.Add(new Product("Leche Entera", 820, 89, "1L"));
+    }
 
     public static void SupplyStore()
     {
