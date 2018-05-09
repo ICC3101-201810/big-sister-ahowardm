@@ -12,8 +12,6 @@ namespace LabPOO
 {
   class Program
   {
-
-    public delegate void BigSisterDelegate(Product product);
     public static List<Product> cart;
     public static List<Product> market;
     public static List<Product> requirements;
@@ -22,7 +20,8 @@ namespace LabPOO
     {
       //cart = new List<Product>();
       market = new List<Product>();
-      BigSisterDelegate bigSister = new BigSisterDelegate(HermanaGrande);
+      //BigSisterDelegate bigSister = new BigSisterDelegate(HermanaGrande);
+      
       DefineRequirements();
       SupplyStore();
 
@@ -71,10 +70,6 @@ namespace LabPOO
         }
       }
     }
-    //Si descomentamos la linea de abajo se sacan los productos cada vez que se agregan al carro.
-    public static void HermanaGrande(Product product){
-      RemoveFromCart(product);
-    }
 
     public static void Pay()
     {
@@ -112,9 +107,6 @@ namespace LabPOO
             continue;
           }
           AddToCart(market[answer]);
-
-          if (!IsNeeded(market[answer]))
-            HermanaGrande(market[answer]);
           break;
         }
         catch

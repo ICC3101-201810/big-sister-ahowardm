@@ -9,6 +9,8 @@ namespace LabPOO
   [Serializable]
   class Product
   {
+    public delegate void AddedProductEventHandler(object source, Product product);
+    public event AddedProductEventHandler AddedProduct;
     private string name;
     private int stock;
     private int price; //Price for one unit of the product
@@ -28,6 +30,7 @@ namespace LabPOO
       {
         carrito.Add(this);
         stock--;
+        OnAddedProduct(this, this);
         return true;
       }
       return false;
@@ -43,5 +46,14 @@ namespace LabPOO
     public int Stock { get => stock; }
     public int Price { get => price; }
     public string Unit { get => unit; }
+
+    protected virtual void OnAddedProduct(object source, Product product)
+    {
+      if (AddedProduct != null)
+        AddedProduct(this, product);
+
+      //if (!IsNeeded(product))
+       // RemoveFromCart(product);
+    }
   }
 }
