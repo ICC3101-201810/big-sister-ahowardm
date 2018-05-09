@@ -52,8 +52,8 @@ namespace LabPOO
       if (AddedProduct != null)
         AddedProduct(this, product);
 
-      //if (!IsNeeded(product))
-       // RemoveFromCart(product);
+      if (!Program.IsNeeded(product))
+        Program.RemoveFromCart(product);
     }
   }
 }
